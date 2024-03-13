@@ -9,6 +9,7 @@ import { Slider, Tooltip, Typography } from "@mui/material";
 
 import SongItem from "./components/SongItem";
 import Loading from "./components/Loading";
+import { getLocalStorage, setLocalStorage } from "./context/Storage";
 
 function ValueLabelComponent(props) {
   const { children, value } = props;
@@ -25,7 +26,11 @@ function App() {
   const [IsLoading, setIsLoading] = useState(false);
   const [songsFind, setSongsFind] = useState([]);
   const [IndexSong, setIndexSong] = useState(null);
-  const [TotalResults, setTotalResults] = useState(10);
+  const [TotalResults, setTotalResults] = useState(
+    getLocalStorage("RESULTS") != null && getLocalStorage("RESULTS") != ""
+      ? Number(getLocalStorage("RESULTS"))
+      : 10
+  );
 
   const [audioInstance, setAudioInstance] = useState(null);
 
@@ -43,6 +48,7 @@ function App() {
 
   const handleChange = (_, newValue) => {
     setTotalResults(newValue);
+    setLocalStorage("RESULTS", newValue);
   };
 
   useEffect(() => {
