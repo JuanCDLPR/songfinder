@@ -5,13 +5,10 @@ import Buscador from "./components/Buscador";
 import { getData } from "./context/backend";
 
 import { Col, Row } from "react-bootstrap";
-import { IconButton, Slider, Tooltip, Typography } from "@mui/material";
+import { Slider, Tooltip, Typography } from "@mui/material";
 
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import PauseCircleIcon from "@mui/icons-material/PauseCircle";
-
-import { segundosAMinutosYsegundos } from "./lib/generales";
 import SongItem from "./components/SongItem";
+import Loading from "./components/Loading";
 
 function ValueLabelComponent(props) {
   const { children, value } = props;
@@ -58,9 +55,10 @@ function App() {
     //console.log("cambio: ", cancion);
 
     if (song !== "") {
+      setIsLoading(true);
       getData(`search?q=${song}&limit=${TotalResults}`)
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           if (!data.error) {
             setSongsFind(data.data);
           }
@@ -69,7 +67,8 @@ function App() {
           console.log(e);
         })
         .finally(() => {
-          console.log("");
+          //console.log("");
+          setIsLoading(false);
         });
     } else {
       setSongsFind([]);
@@ -122,18 +121,22 @@ function App() {
           </Row>
 
           <div className="py-5">
-            <Row className="p-0 m-0">
-              {songsFind.map((item, idx) => {
-                return (
-                  <SongItem
-                    item={item}
-                    PlaySong={PlaySong}
-                    IndexSong={IndexSong}
-                    idx={idx}
-                  />
-                );
-              })}
-            </Row>
+            {IsLoading ? (
+              <Loading />
+            ) : (
+              <Row className="p-0 m-0">
+                {songsFind.map((item, idx) => {
+                  return (
+                    <SongItem
+                      item={item}
+                      PlaySong={PlaySong}
+                      IndexSong={IndexSong}
+                      idx={idx}
+                    />
+                  );
+                })}
+              </Row>
+            )}
           </div>
         </div>
       </div>
