@@ -1,10 +1,12 @@
 import {
   FormControl,
+  IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
 import * as React from "react";
+import CloseIcon from "@mui/icons-material/Close";
 
 import SearchIcon from "@mui/icons-material/Search";
 import "../lib/Prototipos";
@@ -52,6 +54,20 @@ const Buscador = ({ placeholder = "", ValueBusqueda, setValueBusqueda }) => {
           <InputAdornment position="start">
             <SearchIcon />
           </InputAdornment>
+        }
+        endAdornment={
+          query != "" ? (
+            <IconButton
+              onClick={() => {
+                setQuery("");
+                setValueBusqueda("");
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          ) : (
+            <></>
+          )
         }
         label=""
         size="sm"
